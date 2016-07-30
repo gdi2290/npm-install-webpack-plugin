@@ -117,7 +117,7 @@ module.exports.checkBabel = function checkBabel() {
   this.install(missing);
 };
 
-module.exports.checkPackage = function checkPackage() {
+module.exports.checkPackage = function checkPackage(options) {
   try {
     require.resolve(path.join(process.cwd(), "package.json"));
 
@@ -127,7 +127,7 @@ module.exports.checkPackage = function checkPackage() {
   }
 
   console.info("Initializing `%s`...", "package.json");
-  spawn.sync("npm", ["init", "-y"], { stdio: "inherit" });
+  spawn.sync((options.npmPath || "npm"), ["init", "-y"], { stdio: "inherit" });
 };
 
 module.exports.defaultOptions = defaultOptions;
@@ -161,7 +161,7 @@ module.exports.install = function install(deps, options) {
   });
 
   // Ignore input, capture output, show errors
-  var output = spawn.sync("npm", args, {
+  var output = spawn.sync((options.npmPath || "npm"), args, {
     stdio: ["ignore", "pipe", "inherit"]
   });
 
